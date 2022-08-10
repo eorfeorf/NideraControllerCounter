@@ -61,26 +61,9 @@ public class ControllerPresenter : MonoBehaviour
     private void InitializeViews()
     {
         // メニュー.
-        menu.Initialize();
-        // 色.
-        menu.AddTextField("Color", "#00FFFFFF").Subscribe(value =>
-        {
-            if (ColorUtility.TryParseHtmlString(value, out var color))
-            {
-                controllerView.SetColor(color);
-                return;
-            }
-            Debug.LogError("Invalid html color code.");
-        }).AddTo(this);
-        // プレイサイド.
-        menu.AddDropdown<PlaySide>("Side", (int)PlaySide.P1).Subscribe(value =>
-        {
-            model.SetPlaySide((PlaySide)value);
-            controllerView.ApplyPlaySide((PlaySide)value);
-        }).AddTo(this);
-        menu.HideAll();
+        InitMenu();
 
-        // メニューボタン.
+        // 設定ボタン.
         settingView.OnOpen().Subscribe(_ =>
         {
             settingView.SetActiveCloseButton(true);
@@ -98,7 +81,7 @@ public class ControllerPresenter : MonoBehaviour
         controllerView.SetTotal(0);
         controllerView.SetKeyPerSec(0);
 
-        // ボタン.
+        // 鍵盤.
         for (var i = 0; i < GameDefine.KEY_NUM; ++i)
         {
             controllerView.SetButtonState(i, false);
@@ -107,5 +90,36 @@ public class ControllerPresenter : MonoBehaviour
         // スクラッチ.
         controllerView.SetStateScratchL(false);
         controllerView.SetStateScratchR(false);
+    }
+
+    private void InitMenu()
+    {
+        // コントローラーのモード.
+        menu.AddDropdown<ControllerType>("Mode", (int)ControllerType.DAO_BMS).Subscribe(value =>
+        {
+            model.SetControllerMode((ControllerType)value);
+        }).AddTo(this);
+        
+        // プレイサイド.
+        menu.AddDropdown<PlaySide>("Side", (int)PlaySide.P1).Subscribe(value =>
+        {
+            model.SetPlaySide((PlaySide)value);
+            controllerView.ApplyPlaySide((PlaySide)value);
+        }).AddTo(this);
+        
+        // 発行色.
+        menu.AddTextField("Color", "#00FFFFFF").Subscribe(value =>
+        {
+            if (ColorUtility.TryParseHtmlString(value, out var color))
+            {
+                controllerView.SetColor(color);
+            }
+            else
+            {
+                Debug.LogError("Invalid html color code.");    
+            }
+        }).AddTo(this);
+        
+        menu.HideAll();
     }
 }

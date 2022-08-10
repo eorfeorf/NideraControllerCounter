@@ -93,4 +93,17 @@ public class ControllerModel : IDisposable
     {
         playSide = side;
     }
+
+    public void SetControllerMode(ControllerType type)
+    {
+        switch (type)
+        {
+            case ControllerType.DAO_BMS:
+                currentController = new ControllerDaoBms();
+                break;
+            case ControllerType.DAO_INF:
+                currentController = new ControllerDaoInf();
+                break;
+        }
+    }
 }
