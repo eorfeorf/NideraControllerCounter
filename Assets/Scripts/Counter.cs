@@ -4,6 +4,9 @@ using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 
+/// <summary>
+/// カウンター.
+/// </summary>
 public class Counter
 {
     public IReadOnlyReactiveProperty<int> Total => total;
@@ -30,19 +33,7 @@ public class Counter
         total.Value = count.Sum();
     }
     
-    public void UpdatePerSec()
-    {
-        // PerSec.
-        for (var i = 0; i < perSec.Count; ++i)
-        {
-            if ((perSec[i] + 1f) < Time.time)
-            {
-                perSec.RemoveAt(i);
-            }
-        }
-    }
-    
-    public async UniTask PerSecRun()
+    public int UpdatePerSecRun()
     {
         for (var i = 0; i < perSec.Count; ++i)
         {
@@ -51,5 +42,7 @@ public class Counter
                 perSec.RemoveAt(i);
             }
         }
+
+        return perSec.Count;
     }
 }

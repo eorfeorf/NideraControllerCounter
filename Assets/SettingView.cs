@@ -9,7 +9,6 @@ public class SettingView : MonoBehaviour
 {
     [SerializeField]
     private Button openButton;
-
     [SerializeField]
     private Button closeButton;
 

@@ -33,7 +33,7 @@ public class ControllerDaoBms : IController
         // 2Pなら逆の方向を光らせる.
         if (side == PlaySide.P2)
         {
-            ret = (!ret.Item1, !ret.Item2);
+            (ret.Item1, ret.Item2) = (ret.Item2, ret.Item1);
         }
 
         return ret;

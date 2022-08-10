@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class ControllerInput : MonoBehaviour
     public IReadOnlyReactiveProperty<JoystickState> JoystickState => joystickState;
     private readonly ReactiveProperty<JoystickState> joystickState = new ReactiveProperty<JoystickState>();
 
+    public List<Joystick> Joysticks = new List<Joystick>();
+    
     private Joystick joystick;
 
     private void Awake()
@@ -23,11 +26,12 @@ public class ControllerInput : MonoBehaviour
             {
                 // 弐寺コンだといいなぁ～.
                 joystickGuid = device.InstanceGuid;
+                joystick = new Joystick(dinput, joystickGuid);
+                Joysticks.Add(joystick);
                 break;
             }
         }
 
-        joystick = new Joystick(dinput, joystickGuid);
         joystick.Properties.BufferSize = 1024;
 
         // ポーリングが早いと変動量が変わらない時があり、点滅するので秒数を指定して間隔を空ける.

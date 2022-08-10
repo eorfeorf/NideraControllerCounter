@@ -5,42 +5,39 @@ using UnityEngine;
 
 public class ControllerModel : IDisposable
 {
+    // 鍵盤.
     public IReadOnlyReactiveProperty<KeyActivator.Key> OnKey => onKey;
-    private ReactiveProperty<KeyActivator.Key> onKey = new ReactiveProperty<KeyActivator.Key>();
+    private readonly ReactiveProperty<KeyActivator.Key> onKey = new ReactiveProperty<KeyActivator.Key>();
+    // スクラッチ.
     public IReadOnlyReactiveProperty<bool> OnScratchL => onScratchL;
-    private ReactiveProperty<bool> onScratchL = new ReactiveProperty<bool>();
+    private readonly ReactiveProperty<bool> onScratchL = new ReactiveProperty<bool>();
     public IReadOnlyReactiveProperty<bool> OnScratchR => onScratchR;
-    private ReactiveProperty<bool> onScratchR = new ReactiveProperty<bool>();
+    private readonly ReactiveProperty<bool> onScratchR = new ReactiveProperty<bool>();
+    // 合計.
     public IReadOnlyReactiveProperty<int> OnCounterTotal => onCounterTotal;
-    private ReactiveProperty<int> onCounterTotal = new ReactiveProperty<int>();
+    private readonly ReactiveProperty<int> onCounterTotal = new ReactiveProperty<int>();
 
-    private CompositeDisposable disposable = new CompositeDisposable();
-
-    private ControllerInput input;
+    // 機能.
     private readonly Counter counter = new Counter();
     private readonly KeyActivator keyActivator = new KeyActivator();
     private readonly ScratchActivator scratchActivator = new ScratchActivator();
 
+    // コントローラー.
     private IController currentController;
     private readonly ControllerRepository controllerRepository = new ControllerRepository();
     private readonly ReactiveProperty<ControllerType>  controllerType = new ReactiveProperty<ControllerType>();
-    private ReactiveProperty<PlaySide> playSide = new ReactiveProperty<PlaySide>();
-
-    public int PerSec => counter.GetPerSec();
+    private PlaySide playSide = PlaySide.P1;
+    
+    private readonly CompositeDisposable disposable = new CompositeDisposable();
 
     public ControllerModel(ControllerInput input)
     {
-        this.input = input;
         controllerType.Value = ControllerType.DAO_INF;
         
+        // コントローラー.
         controllerType.Subscribe(type =>
         {
             currentController = controllerRepository.GetController(type);
-        }).AddTo(disposable);
-        
-        playSide.Subscribe(side =>
-        {
-            
         }).AddTo(disposable);
         
         // 入力の状態更新.
@@ -50,7 +47,7 @@ public class ControllerModel : IDisposable
             keyActivator.Update(state);
             
             // スクラッチ.
-            var scratchActive = currentController.GetScratchActive((ushort)state.X, playSide.Value);
+            var scratchActive = currentController.GetScratchActive((ushort)state.X, playSide);
             Debug.Log($"L:R -> ({scratchActive.l}, {scratchActive.r})");
             scratchActivator.Update(scratchActive.l, scratchActive.r);
         }).AddTo(disposable);
@@ -83,18 +80,17 @@ public class ControllerModel : IDisposable
         {
             onCounterTotal.Value = total;
         }).AddTo(disposable);
-        
-        // KeyParSec.
-        counter.PerSecRun().Forget();
-    }
+        }
 
-    public void Update()
-    {
-        counter.UpdatePerSec();
-    }
+    public int UpdatePerSec() => counter.UpdatePerSecRun();
 
     public void Dispose()
     {
         disposable?.Dispose();
+    }
+
+    public void SetPlaySide(PlaySide side)
+    {
+        playSide = side;
     }
 }

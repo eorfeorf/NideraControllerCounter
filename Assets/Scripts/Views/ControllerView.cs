@@ -18,6 +18,17 @@ public class ControllerView : MonoBehaviour
     private ScratchView scratchL;
     [SerializeField]
     private ScratchView scratchR;
+
+    [Header("PlaySide")]
+    [SerializeField]
+    private RectTransform keyRectTransform;
+    [SerializeField]
+    private RectTransform scratchRectTransform;
+
+    [SerializeField]
+    private RectTransform[] keyPositions;
+    [SerializeField]
+    private RectTransform[] scratchPositions;
     
     private ReactiveProperty<Color> color = new ReactiveProperty<Color>();
 
@@ -55,5 +66,11 @@ public class ControllerView : MonoBehaviour
         }
         scratchL.Active.GetComponent<Image>().color = color;
         scratchR.Active.GetComponent<Image>().color = color;
+    }
+
+    public void ApplyPlaySide(PlaySide side)
+    {
+        keyRectTransform.position = keyPositions[(int) side].position;
+        scratchRectTransform.position = scratchPositions[(int) side].position;
     }
 }

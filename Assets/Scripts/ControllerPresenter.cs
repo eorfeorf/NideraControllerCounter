@@ -1,3 +1,4 @@
+using SharpDX.DirectInput;
 using UniRx;
 using UnityEngine;
 
@@ -8,15 +9,16 @@ public class ControllerPresenter : MonoBehaviour
     [SerializeField]
     private SettingView settingView;
     [SerializeField]
-    private HamburgerMenu.Scripts.HamburgerMenu hamburgerMenu;
+    private HamburgerMenu.Scripts.HamburgerMenu menu;
 
     private ControllerModel model;
+    private ControllerInput input;
 
     private void Awake()
     {
         Application.targetFrameRate = 60;
         
-        var input = gameObject.AddComponent<ControllerInput>();
+        input = gameObject.AddComponent<ControllerInput>();
         model = new ControllerModel(input);
     }
 
@@ -49,7 +51,8 @@ public class ControllerPresenter : MonoBehaviour
 
     private void Update()
     {
-        controllerView.SetKeyPerSec(model.PerSec);
+        var perSec = model.UpdatePerSec();
+        controllerView.SetKeyPerSec(perSec);
     }
 
     /// <summary>
@@ -58,28 +61,47 @@ public class ControllerPresenter : MonoBehaviour
     private void InitializeViews()
     {
         // メニュー.
-        hamburgerMenu.Initialize();
-        hamburgerMenu.AddTextField("Color", "00FFFFFF").Subscribe(x =>
+        menu.Initialize();
+        // 色.
+        menu.AddTextField("Color", "#00FFFFFF").Subscribe(value =>
         {
-            if (ColorUtility.TryParseHtmlString(x, out var color))
+            if (ColorUtility.TryParseHtmlString(value, out var color))
             {
                 controllerView.SetColor(color);
+                return;
             }
+            Debug.LogError("Invalid html color code.");
         }).AddTo(this);
-        hamburgerMenu.HideAll();
+        // 色.
+        menu.AddTextField("Color", "#00FFFFFF").Subscribe(value =>
+        {
+            if (ColorUtility.TryParseHtmlString(value, out var color))
+            {
+                controllerView.SetColor(color);
+                return;
+            }
+            Debug.LogError("Invalid html color code.");
+        }).AddTo(this);
+        // プレイサイド.
+        menu.AddDropdown<PlaySide>("Side", (int)PlaySide.P1).Subscribe(value =>
+        {
+            model.SetPlaySide((PlaySide)value);
+            controllerView.ApplyPlaySide((PlaySide)value);
+        }).AddTo(this);
+        menu.HideAll();
 
         // メニューボタン.
         settingView.OnOpen().Subscribe(_ =>
         {
             settingView.SetActiveCloseButton(true);
             settingView.SetActiveOpenButton(false);
-            hamburgerMenu.ShowAll();
+            menu.ShowAll();
         }).AddTo(this);
         settingView.OnClose().Subscribe(_ =>
         {
             settingView.SetActiveCloseButton(false);
             settingView.SetActiveOpenButton(true);
-            hamburgerMenu.HideAll();
+            menu.HideAll();
         }).AddTo(this);
 
         // カウンター.

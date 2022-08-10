@@ -12,7 +12,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "ada80759ea0f8ec5ad4c090102fd3778d75785d5"
+      "hash": "584366fcfb8a140b2d4f9687c39464a08158ad9c"
     },
     "com.neuecc.unirx": {
       "version": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts",

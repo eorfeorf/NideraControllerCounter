@@ -45,4 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controllerView: {fileID: 0}
   settingView: {fileID: 0}
-  hamburgerMenu: {fileID: 0}
+  menu: {fileID: 0}
