@@ -72,16 +72,6 @@ public class ControllerPresenter : MonoBehaviour
             }
             Debug.LogError("Invalid html color code.");
         }).AddTo(this);
-        // 色.
-        menu.AddTextField("Color", "#00FFFFFF").Subscribe(value =>
-        {
-            if (ColorUtility.TryParseHtmlString(value, out var color))
-            {
-                controllerView.SetColor(color);
-                return;
-            }
-            Debug.LogError("Invalid html color code.");
-        }).AddTo(this);
         // プレイサイド.
         menu.AddDropdown<PlaySide>("Side", (int)PlaySide.P1).Subscribe(value =>
         {

@@ -139,10 +139,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1812183068}
     - target: {fileID: 170405821557691131, guid: 6486cbb8fc9dec94d989c8472ddb5aef, type: 3}
-      propertyPath: hamburgerMenu
-      value: 
-      objectReference: {fileID: 1166296546}
-    - target: {fileID: 170405821557691131, guid: 6486cbb8fc9dec94d989c8472ddb5aef, type: 3}
       propertyPath: controllerView
       value: 
       objectReference: {fileID: 347862266}
