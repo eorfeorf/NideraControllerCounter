@@ -1,7 +1,7 @@
 # NideraControllerCounter
 弐寺コンのキーカウンターです。
 
-![image](https://user-images.githubusercontent.com/10098082/184110846-6b5ba960-06bc-452f-bde2-0e3ad4cfa706.png)
+https://user-images.githubusercontent.com/10098082/184129705-3ced8220-a81f-42e4-9c8b-be9ce2cfdcb9.mp4
 
 表示されるもの
 - 入力箇所
