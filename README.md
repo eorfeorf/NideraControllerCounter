@@ -1,6 +1,13 @@
 # NideraControllerCounter
 弐寺コンのキーカウンターです。
 
+![image](https://user-images.githubusercontent.com/10098082/184110846-6b5ba960-06bc-452f-bde2-0e3ad4cfa706.png)
+
+表示されるもの
+- 入力箇所
+- １秒間の打鍵数（スクラッチはカウントしません）
+- 合計打件数
+
 # 注意点
 本ソフトはジョイスティックとして認識してるため、使用するコントローラー以外はPCから抜いてください。
 
