@@ -16,5 +16,5 @@
 
 ![image](https://user-images.githubusercontent.com/10098082/184002567-990ee354-b970-4de0-93d6-4d9756fd0d4d.png)
 
-# 対応機種
+# 動作確認済み機種
 - DAO 旧PHOENIXWAN BMS/INF モード
